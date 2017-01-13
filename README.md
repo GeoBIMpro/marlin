@@ -5,7 +5,7 @@ of this project is not only extremely convoluted but also misleading.
 
 The `marlin` package is based on `konics` but provides a reinforcement learning interface which can
 easily be extended to be used with a variety of RL libraries and algorithms. If you need help with 
-running `marlin`, check out: coming soon.
+running `marlin`, check out: https://www.youtube.com/watch?v=noQkK8I0wEc.
 
 ## usage
 ```
