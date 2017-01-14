@@ -5,15 +5,17 @@ from random import choice
 
 class Game:
 
-    def __init__(self):
-        self.reset()
+    def __init__(self, lidar_mode=True):
         self.num_actions = 5
         self.on_track = True
         self.right_dir = True
+        self.lidar_mode = lidar_mode
+        self.reset()
 
     def reset(self):
         drive = core.Drive()
         world, track = utils.make_wt(choice(maps.MAP_IDS))
+        world.set_lidar(self.lidar_mode)
         drive.x, drive.y, drive.a = track.get_pose(0.0)
         self.drive, self.world, self.track = drive, world, track
 
