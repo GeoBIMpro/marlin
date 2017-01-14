@@ -19,7 +19,7 @@ ACCELERATE = 3
 BRAKE = 4
 ACTIONS = [NOTHING, STEER_LEFT, STEER_RIGHT, ACCELERATE, BRAKE]
 
-game = Game()
+game = Game(lidar_mode=False)
 while not game.is_over():
     image, velocity, steering = game.get_state()
     game.do_action(random.choice(ACTIONS))

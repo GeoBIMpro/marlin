@@ -52,8 +52,8 @@ class Drive:
         x, y, a, v, s = self.x, self.y, self.a, self.v, self.s
         self.x, self.y, self.a = ackerman(x, y, a, v, s)
 
-    def adjust_velocity(self, dv):
-        self.v += dv
+    def set_velocity(self, v):
+        self.v = v
 
-    def adjust_steering(self, ds):
-        self.s += ds
+    def set_steering(self, s):
+        self.s = s

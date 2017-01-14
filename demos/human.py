@@ -9,7 +9,7 @@ MY_DIR = path.dirname(path.abspath(__file__))
 sys.path.insert(0, path.abspath(MY_DIR + '/..'))
 from marlin import Game
 
-game = Game()
+game = Game(lidar_mode=False)
 while not game.is_over():
     print("""
 Enter 0 to change nothing, 1 to adjust the steering wheel to the right, 2 to 

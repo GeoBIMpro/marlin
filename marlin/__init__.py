@@ -45,15 +45,16 @@ class Game:
     def do_action(self, action):
         drive, world, track = self.drive, self.world, self.track
 
-        if action == 0: pass
+        if action == 0:
+            drive.set_steering(0.1)
         elif action == 1:
-            drive.adjust_steering(0.1)
+            drive.set_steering(0.0)
         elif action == 2:
-            drive.adjust_steering(-0.1)
+            drive.set_steering(-0.1)
         elif action == 3:
-            drive.adjust_velocity(0.1)
+            drive.set_velocity(1.0)
         elif action == 4:
-            drive.adjust_velocity(-0.1)
+            drive.set_velocity(0.5)
         else: raise "Unsupported action."
         drive.step()
 

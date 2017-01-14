@@ -14,7 +14,7 @@ reward_log = open("dqn_rewards.txt", "wt")
 class QL4KGame(object):
     
     def __init__(self):
-        self.game = Game()
+        self.game = Game(lidar_mode=True)
         self.total_reward = False
         self.game.reset()
 
