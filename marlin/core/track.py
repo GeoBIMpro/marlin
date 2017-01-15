@@ -4,7 +4,7 @@ from math import atan2, sqrt, pi
 
 P_MISSING_CONE = 0.2
 VEHICLE_WIDTH = 2.0 + random()
-CONE_DISTANCE = 3.0 + random()
+CONE_DISTANCE = 2.0 + random()
 
 def D(f_t, t, eps=1e-5):
     return (f_t(t + eps) - f_t(t - eps)) / (2.0 * eps)

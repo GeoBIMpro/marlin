@@ -39,7 +39,7 @@ class Game:
     def get_score(self):
         if self.is_won(): return 100.0
         if self.on_track and self.right_dir:
-            return self.drive.v + 1.0 / (1.0 + self.d)
+            return (self.drive.v ** 2) / (1.0 + self.d)
         return 0.0
 
     def do_action(self, action):
@@ -52,9 +52,9 @@ class Game:
         elif action == 2:
             drive.set_steering(-0.1)
         elif action == 3:
-            drive.set_velocity(5.0)
-        elif action == 4:
             drive.set_velocity(2.5)
+        elif action == 4:
+            drive.set_velocity(1.0)
         else: raise "Unsupported action."
         drive.step()
 
