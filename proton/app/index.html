@@ -134,6 +134,11 @@
 
             vm.numFrames += 1;
             vm.totalTime += (new Date()).getTime() - start;
+            if (vm.numFrames > 1000) {
+                var app = require('electron').remote.app;
+                app.relaunch();
+                app.quit()
+            }
         })
         vm.message = "Ready!"
     </script>
