@@ -22,7 +22,7 @@ class Game:
     def is_won(self):
         drive, world, track = self.drive, self.world, self.track
         end_x, end_y, _ = track.get_pose(track.e_t)
-        if abs(end_x - drive.x) + abs(end_y - drive.y) < 1.0:
+        if abs(end_x - drive.x) + abs(end_y - drive.y) < 5.0:
             return True
         return False
 

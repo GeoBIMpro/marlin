@@ -1,6 +1,6 @@
 """
-This is a simple DQN controller which takes the image part of the state (for simplicity, it ignores
-the velocity and steering angle).
+This is a dueling DQN controller which takes the image part of the state (for simplicity, it 
+ignores the velocity and steering angle).
 """
 
 # First let's wrap the internal game interface with a qlearning4k compatible interface
@@ -14,12 +14,12 @@ reward_log = open("dqn_rewards.txt", "wt")
 class QL4KGame(object):
     
     def __init__(self):
-        self.game = Game(lidar_mode=True)
+        self.game = Game(lidar_mode=False)
         self.total_reward = False
         self.game.reset()
 
     @property
-    def name(self): return "kGame"
+    def name(self): return "QL4KGame"
     
     @property
     def nb_actions(self): return self.game.num_actions
@@ -43,33 +43,45 @@ class QL4KGame(object):
     def draw(self): return self.get_state()
     def get_possible_actions(self): return range(self.nb_actions)
 
-# Now let's hand over all the learning / replay stuff to ql4k and off we go!
-from keras.models import Sequential, load_model
+# Dueling DQN architecture (see https://arxiv.org/pdf/1511.06581v3.pdf)
 from keras.layers import *
-from keras.optimizers import *
+from keras.models import *
+from keras import backend as K
 from qlearning4k import Agent
 
 ql4kgame = QL4KGame()
-
 nb_frames = 2
 nb_actions = ql4kgame.nb_actions
 
-"""
-model = Sequential()
-model.add(Convolution2D(32, 3, 3, activation='relu', dim_ordering="th", input_shape=(nb_frames, 240, 480)))
-model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Flatten())
-model.add(Dense(nb_actions))
-model.compile(RMSprop(), 'MSE')
-"""
-model = load_model("dqn_model.h5")
+x_in = Input(shape=(nb_frames, 240, 480))
+
+adv = Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(x_in)
+adv = Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(adv)
+adv = Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(adv)
+adv = Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(adv)
+adv = Convolution2D(64, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(adv)
+adv = Convolution2D(64, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(adv)
+adv = Flatten()(adv)
+adv = Dense(nb_actions)(adv)
+adv = Lambda(lambda x: x - K.mean(x, axis=1, keepdims=True))(adv)
+
+val = Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(x_in)
+val = Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(val)
+val = Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(val)
+val = Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(val)
+val = Convolution2D(64, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(val)
+val = Convolution2D(64, 3, 3, subsample=(2,2), activation='relu', dim_ordering='th')(val)
+val = Flatten()(val)
+val = Dense(1)(val)
+val = RepeatVector(nb_actions)(val)
+val = Flatten()(val)
+
+y_out = merge([adv, val], mode='sum')
+
+model = Model(input=x_in, output=y_out)
+model.compile(optimizer='rmsprop', loss='mse')
 
 agent = Agent(model=model, memory_size=-1, nb_frames=nb_frames)
-agent.train(ql4kgame, batch_size=64, nb_epoch=200, gamma=0.7)
+agent.train(ql4kgame, batch_size=64, nb_epoch=100, gamma=0.7)
 model.save("dqn_model.h5")
 agent.play(ql4kgame)
