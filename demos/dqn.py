@@ -53,18 +53,23 @@ ql4kgame = QL4KGame()
 
 nb_frames = 2
 nb_actions = ql4kgame.nb_actions
+
+"""
 model = Sequential()
-model.add(Convolution2D(8, 3, 3, activation='relu', dim_ordering="th", input_shape=(nb_frames, 240, 480)))
-model.add(Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
+model.add(Convolution2D(32, 3, 3, activation='relu', dim_ordering="th", input_shape=(nb_frames, 240, 480)))
 model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
 model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(64, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
-model.add(Convolution2D(64, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
+model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
+model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
+model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
+model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
 model.add(Flatten())
 model.add(Dense(nb_actions))
 model.compile(RMSprop(), 'MSE')
+"""
+model = load_model("dqn_model.h5")
 
-agent = Agent(model=model, memory_size=10000, nb_frames=nb_frames)
+agent = Agent(model=model, memory_size=-1, nb_frames=nb_frames)
 agent.train(ql4kgame, batch_size=64, nb_epoch=200, gamma=0.7)
+model.save("dqn_model.h5")
 agent.play(ql4kgame)

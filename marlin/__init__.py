@@ -52,9 +52,9 @@ class Game:
         elif action == 2:
             drive.set_steering(-0.1)
         elif action == 3:
-            drive.set_velocity(1.0)
+            drive.set_velocity(5.0)
         elif action == 4:
-            drive.set_velocity(0.5)
+            drive.set_velocity(2.5)
         else: raise "Unsupported action."
         drive.step()
 

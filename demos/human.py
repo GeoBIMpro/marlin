@@ -13,7 +13,7 @@ game = Game(lidar_mode=False)
 while not game.is_over():
     print("""
 Enter 0 to change nothing, 1 to adjust the steering wheel to the right, 2 to 
-move the steering wheel left, 3 to accelerate, 4 to brake.""")
+move the steering wheel left, 3 to move at 11mph, 4 to move at 5mph.""")
     image, velocity, steering = game.get_state()
     print("current velocity", velocity, "|", "steering angle", steering)
     game.do_action(int(input()))
