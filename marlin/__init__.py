@@ -58,5 +58,12 @@ class Game:
         else: raise "Unsupported action."
         drive.step()
 
-        pose = (drive.x, drive.y, drive.a)
+        pose = [drive.x, drive.y, drive.a]
         self.on_track, self.right_dir, self.d, self.da = track.evaluate(pose)
+        world.set_message({
+            "x": round(drive.x, 2),
+            "y": round(drive.y, 2),
+            "a": round(drive.a, 2),
+            "v": round(drive.v, 2),
+            "s": round(drive.s, 2)
+        })

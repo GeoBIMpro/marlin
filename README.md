@@ -24,3 +24,5 @@ while not game.is_over():
     image, velocity, steering = game.get_state()
     game.do_action(random.choice(ACTIONS))
 ```
+
+![demos/preview.png](demos/preview.png)

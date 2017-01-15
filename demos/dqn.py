@@ -54,7 +54,7 @@ ql4kgame = QL4KGame()
 nb_frames = 2
 nb_actions = ql4kgame.nb_actions
 model = Sequential()
-model.add(Convolution2D(8, 3, 3, activation='relu', dim_ordering="th", input_shape=(nb_frames, 256, 256)))
+model.add(Convolution2D(8, 3, 3, activation='relu', dim_ordering="th", input_shape=(nb_frames, 240, 480)))
 model.add(Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
 model.add(Convolution2D(16, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
 model.add(Convolution2D(32, 3, 3, subsample=(2,2), activation='relu', dim_ordering="th"))
