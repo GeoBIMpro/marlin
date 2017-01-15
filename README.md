@@ -3,6 +3,8 @@ This is the "Multistage Autonomous Reinforcement Learning for Intelligent Naviga
 known as MARLIN. Fun fact, the marlin is one of the fastest fish in the world and as such, the name
 of this project is not only extremely convoluted but also misleading.
 
+![screenshot](demos/preview.png)
+
 The `marlin` package is based on `konics` but provides a reinforcement learning interface which can
 easily be extended to be used with a variety of RL libraries and algorithms. If you need help with 
 running `marlin`, check out: https://www.youtube.com/watch?v=noQkK8I0wEc.
@@ -24,5 +26,3 @@ while not game.is_over():
     image, velocity, steering = game.get_state()
     game.do_action(random.choice(ACTIONS))
 ```
-
-![demos/preview.png](demos/preview.png)
