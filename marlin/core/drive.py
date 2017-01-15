@@ -4,7 +4,7 @@ from math import pi, tan, cos, sin
 PI = pi
 TAU = 2.0 * pi
 WHEEL_BASE_METERS = 1.0
-FRAMES_PER_SECOND = 10.0
+FRAMES_PER_SECOND = 2.0
 SECONDS_PER_FRAME = 1.0 / FRAMES_PER_SECOND
 
 def awrap(a):
@@ -14,8 +14,8 @@ def awrap(a):
 
 def ackerman(x, y, a, v, s):
     if s == 0:
-        nx = x + cos(a) * v
-        ny = y + sin(a) * v
+        nx = x + cos(a) * v * SECONDS_PER_FRAME
+        ny = y + sin(a) * v * SECONDS_PER_FRAME
         return nx, ny, a
 
     circle_angle = awrap(a + PI/2.0)
